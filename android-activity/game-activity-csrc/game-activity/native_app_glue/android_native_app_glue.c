@@ -243,10 +243,30 @@ static bool default_key_filter(const GameActivityKeyEvent* event) {
 // See
 // https://developer.android.com/reference/android/view/InputDevice#SOURCE_TOUCHSCREEN
 #define SOURCE_TOUCHSCREEN 0x00001002
+#define SOURCE_STYLUS 0x00004002
+
+
+// https://developer.android.com/reference/android/view/MotionEvent#constants_1
+#define TOOL_TYPE_STYLUS 0x00000002
+#define ACTION_HOVER_ENTER 0x00000009
+#define ACTION_HOVER_EXIT 0x0000000a
+#define ACTION_HOVER_MOVE 0x00000007
+#define BUTTON_PRIMARY 0x00000001
+#define BUTTON_STYLUS_SECONDARY 0x00000040
+#define ACTION_DOWN 0x00000000
+#define ACTION_UP 0x00000001
 
 static bool default_motion_filter(const GameActivityMotionEvent* event) {
     // Ignore any non-touch events.
-    return event->source == SOURCE_TOUCHSCREEN;
+    return (event->source == SOURCE_TOUCHSCREEN ||
+		        event->action == TOOL_TYPE_STYLUS||
+		        event->action == ACTION_HOVER_ENTER ||
+		        event->action == ACTION_HOVER_EXIT ||
+		        event->action == ACTION_HOVER_MOVE ||
+		        event->action == BUTTON_STYLUS_PRIMARY ||
+		        event->action == BUTTON_STYLUS_SECONDARY ||
+		        event->action == ACTION_DOWN ||
+		        event->action == ACTION_UP);
 }
 
 // --------------------------------------------------------------------
